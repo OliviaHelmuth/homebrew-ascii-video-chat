@@ -40,6 +40,11 @@ class AsciiVideoChat < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
+    # Copied into the keg (not left in buildpath) because buildpath is torn
+    # down before post_install runs -- caught for real as `undefined method
+    # '/' for nil` on a first `brew install`, since post_install's own
+    # `buildpath` had already gone nil by then.
+    (prefix/"packaging/macos").install "packaging/macos/AsciiCallHandler.applescript", "packaging/macos/build-and-register.sh"
   end
 
   def post_install
@@ -51,7 +56,7 @@ class AsciiVideoChat < Formula
     # doc comment for what that mechanism actually does and what's been
     # smoke-tested vs. not. Best-effort: a failure here doesn't fail the
     # install, since the CLI itself works fine without it.
-    system buildpath/"packaging/macos/build-and-register.sh"
+    system prefix/"packaging/macos/build-and-register.sh"
   rescue => e
     opoo "asciicall:// protocol handler registration failed (call handoff links won't work): #{e}"
   end
