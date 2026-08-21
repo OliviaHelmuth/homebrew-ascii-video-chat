@@ -40,25 +40,27 @@ class AsciiVideoChat < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
-    # Copied into the keg (not left in buildpath) because buildpath is torn
-    # down before post_install runs -- caught for real as `undefined method
-    # '/' for nil` on a first `brew install`, since post_install's own
-    # `buildpath` had already gone nil by then.
+    # Copied into the keg (not left in buildpath, which is torn down before
+    # post_install runs) so caveats below can point at a stable path.
     (prefix/"packaging/macos").install "packaging/macos/AsciiCallHandler.applescript", "packaging/macos/build-and-register.sh"
   end
 
-  def post_install
-    # Registers the asciicall:// protocol handler (ticket 05,
-    # .scratch/browser-handoff/issues/05-protocol-handler.md) so "click to
-    # call" links from the Landing Page open straight into a call. A bare
-    # CLI binary has no app bundle for Launch Services to route a URL scheme
-    # to, so this builds a minimal one -- see build-and-register.sh's own
-    # doc comment for what that mechanism actually does and what's been
-    # smoke-tested vs. not. Best-effort: a failure here doesn't fail the
-    # install, since the CLI itself works fine without it.
-    system prefix/"packaging/macos/build-and-register.sh"
-  rescue => e
-    opoo "asciicall:// protocol handler registration failed (call handoff links won't work): #{e}"
+  # NOT run from post_install: Homebrew sandboxes install/post_install
+  # filesystem writes, and registering the asciicall:// protocol handler
+  # means writing a new .app bundle to ~/Applications and calling
+  # lsregister -- exactly the kind of side effect that sandbox blocks.
+  # Caught for real: build-and-register.sh silently no-op'd under
+  # post_install (Ruby's `system` returns false on a nonzero exit rather
+  # than raising, so a bare rescue never even reported it) while the exact
+  # same script worked fine run by hand outside the sandbox immediately
+  # after. `caveats` is Homebrew's own idiom for "here's an optional next
+  # step" and matches the same opt-in posture install.sh/install.ps1 already
+  # use for Linux/Windows registration -- printed, never silently applied.
+  def caveats
+    <<~EOS
+      To enable "click to call" links (asciicall://) from the website, run:
+        #{opt_prefix}/packaging/macos/build-and-register.sh
+    EOS
   end
 
   test do
