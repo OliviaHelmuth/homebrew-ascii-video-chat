@@ -27,6 +27,16 @@ class AsciiVideoChat < Formula
   license "MIT"
 
   depends_on "rust" => :build
+  depends_on "pkg-config" => :build
+  # opus (the audio crate)'s -sys crate links a system Opus via pkg-config
+  # if it finds one, otherwise vendors and builds Opus's own CMakeLists.txt
+  # via CMake -- which isn't declared as a dependency here and so isn't
+  # present in Homebrew's sandboxed build environment at all ("is `cmake`
+  # not installed?", caught for real on a first `brew install` attempt).
+  # Declaring opus directly sidesteps that vendored-build path entirely,
+  # matching the same real fix applied to .github/workflows/release.yml's
+  # macOS jobs.
+  depends_on "opus"
 
   def install
     system "cargo", "install", *std_cargo_args
