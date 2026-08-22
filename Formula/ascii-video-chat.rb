@@ -1,22 +1,25 @@
-# Homebrew formula for the ASCII Video Chat Terminal Client.
+# Homebrew formula TEMPLATE for the ASCII Video Chat Terminal Client.
 #
-# Lives at Formula/ascii-video-chat.rb in the OliviaHelmuth/homebrew-ascii-video-chat
-# tap repo (also mirrored here at packaging/homebrew/ in the main repo, kept
-# in sync by hand on each bump). Builds from source via `cargo build
-# --release` (simplest, most portable shape for a Rust binary — a
-# prebuilt-bottle download is a future optimization, not required by
+# This file is never installed as-is. `packaging/homebrew/bump-tap.sh`
+# renders it (substituting https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.2.tar.gz/162ac6239a88d7e4e1a3b3368013ab48ebc82744bf1ef7913aad2ac3b31f22f5/0.1.2 for a real tagged
+# release) and pushes the *rendered* result to Formula/ascii-video-chat.rb
+# in the separate OliviaHelmuth/homebrew-ascii-video-chat tap repo — see
+# .github/workflows/bump-tap.yml, which runs the same script automatically
+# on every `v*` tag push. This template is the only thing that should ever
+# be hand-edited (e.g. a new `depends_on`); the tap repo's real formula is
+# regenerated from it on every release, never edited directly.
+#
+# Previously this was a real formula, hand-copied into the tap repo on
+# every bump — that's exactly the "two copies kept in sync by a human"
+# shape that let the tap silently drift a full version behind (v0.1.2
+# tagged and released while the tap stayed on v0.1.1, caught only by
+# chance). Converting to a template + script removes the second copy
+# entirely rather than just automating the copy step.
+#
+# Builds from source via `cargo build --release` (simplest, most portable
+# shape for a Rust binary — a prebuilt-bottle download is a future
+# optimization, not required by
 # .scratch/browser-handoff/issues/02-homebrew-formula.md).
-#
-# --- Bumping to a new release (repeatable, manual today) -----------------
-# 1. Tag and push a new version (triggers .github/workflows/release.yml).
-# 2. url = "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/vX.Y.Z.tar.gz"
-# 3. sha256 = `curl -fsSL <that url> -o t.tar.gz && shasum -a 256 t.tar.gz`
-#    (the *source* tarball's hash, not any of the release.yml binaries —
-#    Homebrew verifies what it downloads to build from, and this formula
-#    builds from source).
-# 4. version "X.Y.Z"
-# 5. Copy this file to Formula/ascii-video-chat.rb in the tap repo and push.
-# ---------------------------------------------------------------------------
 
 class AsciiVideoChat < Formula
   desc "Live ASCII-art video calls, right in your terminal"
