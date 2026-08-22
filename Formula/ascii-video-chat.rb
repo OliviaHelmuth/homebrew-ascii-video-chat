@@ -26,11 +26,10 @@ class AsciiVideoChat < Formula
   homepage "https://github.com/OliviaHelmuth/ascii-video-chat"
   url "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.2.tar.gz"
   sha256 "162ac6239a88d7e4e1a3b3368013ab48ebc82744bf1ef7913aad2ac3b31f22f5"
-  version "0.1.2"
   license "MIT"
 
-  depends_on "rust" => :build
   depends_on "pkg-config" => :build
+  depends_on "rust" => :build
   # opus (the audio crate)'s -sys crate links a system Opus via pkg-config
   # if it finds one, otherwise vendors and builds Opus's own CMakeLists.txt
   # via CMake -- which isn't declared as a dependency here and so isn't
@@ -45,7 +44,8 @@ class AsciiVideoChat < Formula
     system "cargo", "install", *std_cargo_args
     # Copied into the keg (not left in buildpath, which is torn down before
     # post_install runs) so caveats below can point at a stable path.
-    (prefix/"packaging/macos").install "packaging/macos/AsciiCallHandler.applescript", "packaging/macos/build-and-register.sh"
+    (prefix/"packaging/macos").install "packaging/macos/AsciiCallHandler.applescript",
+                                        "packaging/macos/build-and-register.sh"
   end
 
   # NOT run from post_install: Homebrew sandboxes install/post_install
