@@ -21,9 +21,9 @@
 class AsciiVideoChat < Formula
   desc "Live ASCII-art video calls, right in your terminal"
   homepage "https://github.com/OliviaHelmuth/ascii-video-chat"
-  url "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.1.tar.gz"
-  sha256 "d73101460036f258c01775738b56dcc792447bb4d6dcb64da7c24ed8c783751f"
-  version "0.1.1"
+  url "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.2.tar.gz"
+  sha256 "162ac6239a88d7e4e1a3b3368013ab48ebc82744bf1ef7913aad2ac3b31f22f5"
+  version "0.1.2"
   license "MIT"
 
   depends_on "rust" => :build
