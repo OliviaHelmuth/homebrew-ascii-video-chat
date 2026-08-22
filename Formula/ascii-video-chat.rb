@@ -1,8 +1,8 @@
 # Homebrew formula TEMPLATE for the ASCII Video Chat Terminal Client.
 #
 # This file is never installed as-is. `packaging/homebrew/bump-tap.sh`
-# renders it (substituting https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.2.tar.gz/162ac6239a88d7e4e1a3b3368013ab48ebc82744bf1ef7913aad2ac3b31f22f5/0.1.2 for a real tagged
-# release) and pushes the *rendered* result to Formula/ascii-video-chat.rb
+# renders it (filling in the three placeholder fields below for a real
+# tagged release) and pushes the *rendered* result to Formula/ascii-video-chat.rb
 # in the separate OliviaHelmuth/homebrew-ascii-video-chat tap repo — see
 # .github/workflows/bump-tap.yml, which runs the same script automatically
 # on every `v*` tag push. This template is the only thing that should ever
