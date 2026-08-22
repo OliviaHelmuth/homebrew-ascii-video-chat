@@ -24,8 +24,8 @@
 class AsciiVideoChat < Formula
   desc "Live ASCII-art video calls, right in your terminal"
   homepage "https://github.com/OliviaHelmuth/ascii-video-chat"
-  url "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.4.tar.gz"
-  sha256 "e717b2576f497dfb67d16843e4ec84a9975b433746e65b510c6442f6904d5974"
+  url "https://github.com/OliviaHelmuth/ascii-video-chat/archive/refs/tags/v0.1.5.tar.gz"
+  sha256 "8049ab28d23f31ae1c31258c91d3d28d76a3bae82cfa5c19f75cc1daa5c878e1"
   license "MIT"
 
   depends_on "pkg-config" => :build
@@ -39,6 +39,14 @@ class AsciiVideoChat < Formula
   # matching the same real fix applied to .github/workflows/release.yml's
   # macOS jobs.
   depends_on "opus"
+  # webrtc-audio-processing (the AEC/echo-cancellation crate)'s -sys crate's
+  # `bundled` feature statically compiles vendored C++ via meson+ninja --
+  # neither present in Homebrew's sandboxed build environment by default,
+  # same class of gap as opus above (and the same fix already applied to
+  # .github/workflows/release.yml and bump-tap.yml after v0.1.3's release
+  # run failed on exactly this).
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
